@@ -3,7 +3,7 @@ import { css, jsx } from '@emotion/core';
 import React from 'react';
 import { Box, Image } from '@chakra-ui/core';
 
-export const FlipCard = ({ image, flipped = false, onFlip, onUnflip, timeout = 500 }) => {
+export const FlippableCard = ({ image, flipped = false, onFlip, onUnflip, timeout = 500 }) => {
   const handleCardClick = React.useCallback(() => {
     const newFlippedState = !flipped;
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import Head from 'next/head';
-import { Box, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@chakra-ui/core';
+import { Box } from '@chakra-ui/core';
 import { useMachine } from '@xstate/react';
 
 import { duplicateArray, shuffleArray } from '../utils';
-import { FlipCard } from '../components';
+import { FlippableCard, WelcomeScreen, WonModal } from '../components';
 import { flipCardGameMachine } from '../machines';
 
 const HomePage = () => {
@@ -48,7 +48,7 @@ const HomePage = () => {
   return (
     <>
       <Head>
-        <title>Flip cards game</title>
+        <title>Flipping Cards game</title>
         <link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet" />
       </Head>
 
@@ -66,7 +66,7 @@ const HomePage = () => {
           >
             {allImagesRef.current.map((image, index) => (
               <Box w="100%" h="100%" display="flex" alignItems="center" justifyContent="center" key={index}>
-                <FlipCard
+                <FlippableCard
                   image={image}
                   flipped={
                     state.context.correctCardIndexes.includes(index) ||
@@ -81,29 +81,9 @@ const HomePage = () => {
           </Box>
         )}
 
-        {state.value === 'standby' && (
-          <Box height="100vh" width="100vw" display="flex" alignItems="center" justifyContent="center">
-            <Button variant="solid" variantColor="blue" size="lg" onClick={handleStartGame}>
-              Start Game
-            </Button>
-          </Box>
-        )}
+        {state.value === 'standby' && <WelcomeScreen onStartButtonClick={handleStartGame} />}
 
-        <Modal isOpen={state.value === 'won'}>
-          <ModalOverlay />
-
-          <ModalContent>
-            <ModalHeader>You won</ModalHeader>
-
-            <ModalBody>Do you want to go back?</ModalBody>
-
-            <ModalFooter>
-              <Button variantColor="blue" mr={3} onClick={handleResetGame}>
-                Go back
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+        <WonModal isOpen={state.value === 'won'} onBackButtonClick={handleResetGame} />
       </Box>
     </>
   );
