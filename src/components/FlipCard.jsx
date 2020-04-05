@@ -3,21 +3,21 @@ import { css, jsx } from '@emotion/core';
 import React from 'react';
 import { Box, Image } from '@chakra-ui/core';
 
-export const FlipCard = ({ image, flipped = false, onFlip, onUnFlip, timeout = 500 }) => {
+export const FlipCard = ({ image, flipped = false, onFlip, onUnflip, timeout = 500 }) => {
   const handleCardClick = React.useCallback(() => {
     const newFlippedState = !flipped;
 
     if (newFlippedState) {
       onFlip();
     } else {
-      onUnFlip();
+      onUnflip();
     }
-  }, [flipped, onFlip, onUnFlip]);
+  }, [flipped, onFlip, onUnflip]);
 
   return (
     <Box
-      w="100%"
-      h={270}
+      w="80%"
+      h="80%"
       css={css`
         perspective: 500px;
       `}
