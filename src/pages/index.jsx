@@ -5,44 +5,23 @@ import { useMachine } from '@xstate/react';
 
 import { duplicateArray, shuffleArray } from '../utils';
 import { FlippableCard, WelcomeScreen, WonModal } from '../components';
-import { flipCardGameMachine } from '../machines';
+import { flippingCardsGame } from '../machines';
 
 const HomePage = () => {
   const allImagesRef = React.useRef(shuffleArray(duplicateArray(images)));
-  const timeoutRef = React.useRef(undefined);
-  const [state, send] = useMachine(flipCardGameMachine, {
+  const [state, send] = useMachine(flippingCardsGame, {
     devTools: true,
   });
 
   const handleFlip = React.useCallback(
-    (flippingCardIndex) => {
-      if (state.context.flippingCardIndexes.length === 2) {
-        return;
-      }
-
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = undefined;
-      }
-
-      send({ type: 'FLIP_CARD', index: flippingCardIndex });
-
-      timeoutRef.current = setTimeout(() => {
-        send({ type: 'CHECK_CARDS_CORRECT' });
-      }, ANIMATION_TIMEOUT);
-    },
-    [send, state.context.flippingCardIndexes],
-  );
-
-  const handleUnflip = React.useCallback(
-    (unflippingCardIndex) => {
-      send('UNFLIP_CARD', { index: unflippingCardIndex });
+    (flipIndex) => {
+      send({ type: 'FLIP', index: flipIndex });
     },
     [send],
   );
 
   const handleStartGame = React.useCallback(() => {
-    send('START_GAME', { allCards: allImagesRef.current });
+    send('START_GAME', { allCards: allImagesRef.current, flipCardDuration: FLIP_CARD_ANIMATION_DURATION });
   }, [send]);
 
   const handleResetGame = React.useCallback(() => {
@@ -57,7 +36,7 @@ const HomePage = () => {
       </Head>
 
       <Box as="main">
-        {state.value === 'playing' && (
+        {state.matches('playing') && (
           <Box
             height="100vh"
             display="grid"
@@ -72,22 +51,18 @@ const HomePage = () => {
               <Box w="100%" h="100%" display="flex" alignItems="center" justifyContent="center" key={index}>
                 <FlippableCard
                   image={image}
-                  flipped={
-                    state.context.correctCardIndexes.includes(index) ||
-                    state.context.flippingCardIndexes.includes(index)
-                  }
-                  timeout={ANIMATION_TIMEOUT}
+                  flipped={state.context.correctIndexes.includes(index) || state.context.flippedIndexes.includes(index)}
+                  animationDuration={FLIP_CARD_ANIMATION_DURATION}
                   onFlip={() => handleFlip(index)}
-                  onUnflip={() => handleUnflip(index)}
                 />
               </Box>
             ))}
           </Box>
         )}
 
-        {state.value === 'standby' && <WelcomeScreen onStartButtonClick={handleStartGame} />}
+        {state.matches('standby') && <WelcomeScreen onStartButtonClick={handleStartGame} />}
 
-        <WonModal isOpen={state.value === 'won'} onBackButtonClick={handleResetGame} />
+        <WonModal isOpen={state.matches('won')} onBackButtonClick={handleResetGame} />
       </Box>
     </>
   );
@@ -102,6 +77,6 @@ const images = [
   'https://images.unsplash.com/photo-1478293888741-aee4356f71c7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
 ];
 
-const ANIMATION_TIMEOUT = 600;
+const FLIP_CARD_ANIMATION_DURATION = 600;
 
 export default HomePage;
