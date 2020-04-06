@@ -1,7 +1,6 @@
 {
-  "name": "card-game",
+  "name": "flipping-cards-game",
   "version": "1.0.0",
-  "main": "index.js",
   "author": "Khanh Le",
   "license": "MIT",
   "scripts": {
