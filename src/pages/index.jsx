@@ -16,6 +16,10 @@ const HomePage = () => {
 
   const handleFlip = React.useCallback(
     (flippingCardIndex) => {
+      if (state.context.flippingCardIndexes.length === 2) {
+        return;
+      }
+
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = undefined;
@@ -27,7 +31,7 @@ const HomePage = () => {
         send({ type: 'CHECK_CARDS_CORRECT' });
       }, ANIMATION_TIMEOUT);
     },
-    [send],
+    [send, state.context.flippingCardIndexes],
   );
 
   const handleUnflip = React.useCallback(
