@@ -1,1 +1,1 @@
-export * from './flipCardGameMachine';
+export * from './flippingCardsGame';
