@@ -14,6 +14,7 @@ export const flippingCardsGame = Machine(
     },
     states: {
       standby: {
+        type: 'atomic',
         on: {
           START_GAME: {
             target: 'playing',
@@ -23,8 +24,10 @@ export const flippingCardsGame = Machine(
       },
       playing: {
         initial: 'flippedZero',
+        type: 'compound',
         states: {
           flippedZero: {
+            type: 'atomic',
             entry: 'unflipAll',
             on: {
               '': {
@@ -38,6 +41,7 @@ export const flippingCardsGame = Machine(
             },
           },
           flippedOne: {
+            type: 'atomic',
             after: {
               UNFLIP_WAIT_TIMEOUT: {
                 target: 'flippedZero',
@@ -51,6 +55,7 @@ export const flippingCardsGame = Machine(
             },
           },
           flippedTwo: {
+            type: 'atomic',
             entry: 'checkCorrect',
             after: {
               FLIP_DURATION: 'flippedZero',
@@ -59,6 +64,7 @@ export const flippingCardsGame = Machine(
         },
       },
       won: {
+        type: 'atomic',
         on: {
           RESET_GAME: {
             target: 'standby',
@@ -79,7 +85,7 @@ export const flippingCardsGame = Machine(
         ...context,
         flippedIndexes: [...context.flippedIndexes, event.index],
       })),
-      unflipAll: assign((context, event) => ({
+      unflipAll: assign((context, _event) => ({
         ...context,
         flippedIndexes: [],
       })),
