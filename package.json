@@ -1,5 +1,5 @@
 {
-  "name": "flipping-cards-game",
+  "name": "xstate-flipping-cards-game",
   "version": "1.0.0",
   "author": "Khanh Le",
   "license": "MIT",
@@ -14,10 +14,10 @@
     "@emotion/styled": "^10.0.27",
     "@xstate/react": "^0.8.1",
     "emotion-theming": "^10.0.27",
-    "next": "^9.3.4",
+    "next": "^9.3.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "xstate": "^4.8.0"
+    "xstate": "^4.9.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "2.x",
