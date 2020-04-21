@@ -31,8 +31,9 @@ const HomePage = () => {
   return (
     <>
       <Head>
-        <title>Flipping Cards game</title>
+        <title>Flipping Cards</title>
         <link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       </Head>
 
       <Box as="main">
