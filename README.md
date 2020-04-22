@@ -1,5 +1,7 @@
 # xstate-flipping-cards-game
 
+[![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=flat-square&logo=codesandbox)](http://githubbox.com/lednhatkhanh/xstate-flipping-cards-game)
+
 https://xstate-flipping-cards-game.now.sh/
 
 A flipping cards game using Xstate
